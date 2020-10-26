@@ -4,48 +4,54 @@ import ReactDOM from 'react-dom'
 const Header = (props) => {
   return (
     <div>
-      <h1>{props.course}</h1>
+      <h1>{props.course.name}</h1>
     </div>
   )
 }
 
 const Part = (props) => {
   return (
-    <p key={props.part.key}>{props.part.name} {props.part.exercises}</p>
+    <li>{props.part.name} {props.part.exercises}</li>
   )
 }
 
 const Content = (props) => {
   return (
     <div>
-      {props.parts.map((part) => {
-        return <Part part={part}/>
-      })}
+      <ul>
+        {props.course.parts.map(
+          (part) => <Part key={part.key.toString()} part={part}/>
+        )}
+      </ul>
     </div>
     )
 }
 
 const Total = (props) => {
+  const total_exercises = props.course.parts.reduce((acc, next) => acc + next.exercises, 0)
+
   return (
     <div>
-      <p>Number of exercises {props.total}</p>
+      <p>Number of exercises {total_exercises}</p>
     </div>
   )
 }
 
 const App = () => {
-  const course = 'Half Stack application development'
-  const parts = [
-    {key: 1, name: 'Fundamentals of React', exercises: 10}, 
-    {key: 2, name: 'Using props to pass data', exercises: 7},
-    {key: 3, name: 'State of a component', exercises: 14}]
-  const total_exercises = parts.reduce((acc, next) => acc + next.exercises, 0)
+  const course = {
+    name: 'Half Stack application development',
+    parts: [
+      {key: 1, name: 'Fundamentals of React', exercises: 10}, 
+      {key: 2, name: 'Using props to pass data', exercises: 7},
+      {key: 3, name: 'State of a component', exercises: 14}
+    ]
+  }
 
   return (
     <div>
       <Header course={course}/>
-      <Content parts={parts}/>
-      <Total total={total_exercises}/>
+      <Content course={course}/>
+      <Total course={course}/>
     </div>
   )
 }
