@@ -19,7 +19,10 @@ const Header = () => {
 
 const StatisticLine = ({text, value}) => {
   return (
-    <p>{text} {value}</p>
+    <tr>
+      <td>{text}</td> 
+      <td>{value}</td>
+    </tr>
   )
 }
 
@@ -37,18 +40,20 @@ const Statistics = ({good, neutral, bad}) => {
   
   let average = ((1 * good) + (-1 * bad)) / count
   let pos_fraction = good / count
-  let pos_fraction_str = (pos_fraction * 100).toString() + "%"
+  let pos_fraction_str = (pos_fraction * 100).toFixed(1).toString() + "%"
 
   return (
     <div>
       <h2>statistics</h2>
-      <StatisticLine text="good" value={good}/>
-      <StatisticLine text="neutral" value={neutral}/>
-      <StatisticLine text="bad" value={bad}/>
-      <StatisticLine text="all" value={count}/>
-      <StatisticLine text="good" value={good}/>
-      <StatisticLine text="average" value={average}/>
-      <StatisticLine text="positive" value={pos_fraction_str}/>
+      <table>
+        <StatisticLine text="good" value={good}/>
+        <StatisticLine text="neutral" value={neutral}/>
+        <StatisticLine text="bad" value={bad}/>
+        <StatisticLine text="all" value={count}/>
+        <StatisticLine text="good" value={good}/>
+        <StatisticLine text="average" value={average.toFixed(1)}/>
+        <StatisticLine text="positive" value={pos_fraction_str}/>
+      </table>
     </div>
   )
 }
