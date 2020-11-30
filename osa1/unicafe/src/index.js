@@ -17,6 +17,12 @@ const Header = () => {
   )
 }
 
+const StatisticLine = ({text, value}) => {
+  return (
+    <p>{text} {value}</p>
+  )
+}
+
 const Statistics = ({good, neutral, bad}) => {
   const count = good + neutral + bad
 
@@ -31,16 +37,18 @@ const Statistics = ({good, neutral, bad}) => {
   
   let average = ((1 * good) + (-1 * bad)) / count
   let pos_fraction = good / count
+  let pos_fraction_str = (pos_fraction * 100).toString() + "%"
 
   return (
     <div>
       <h2>statistics</h2>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all {count}</p>
-      <p>average {average}</p>
-      <p>positive {pos_fraction * 100} %</p>
+      <StatisticLine text="good" value={good}/>
+      <StatisticLine text="neutral" value={neutral}/>
+      <StatisticLine text="bad" value={bad}/>
+      <StatisticLine text="all" value={count}/>
+      <StatisticLine text="good" value={good}/>
+      <StatisticLine text="average" value={average}/>
+      <StatisticLine text="positive" value={pos_fraction_str}/>
     </div>
   )
 }
