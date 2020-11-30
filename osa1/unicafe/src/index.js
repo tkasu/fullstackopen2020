@@ -19,14 +19,19 @@ const Header = () => {
 
 const Statistics = ({good, neutral, bad}) => {
   const count = good + neutral + bad
-  
-  let average = 0
-  let pos_fraction = 0
-  if (count != 0) {
-    average = ((1 * good) + (-1 * bad)) / count
-    pos_fraction = good / count
+
+  if (count === 0) {
+    return (
+      <div>
+        <h2>statistics</h2>
+        <p>No feedback given</p>
+      </div>
+    )
   }
   
+  let average = ((1 * good) + (-1 * bad)) / count
+  let pos_fraction = good / count
+
   return (
     <div>
       <h2>statistics</h2>
