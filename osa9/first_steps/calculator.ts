@@ -18,5 +18,3 @@ const calculator = (a: number, b: number, op: Operation): Result => {
   
 const res = calculator(2, 1, 'divide');
 console.log(res)
-
-console.log(process.argv)
