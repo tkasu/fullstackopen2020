@@ -25,7 +25,7 @@ const Header = ({course}) => {
       <div>
         <ul>
           {course.parts.map(
-            (part) => <Part key={part.key.toString()} part={part}/>
+            (part) => <Part key={part.id.toString()} part={part}/>
           )}
         </ul>
       </div>
