@@ -24,6 +24,12 @@ const create = (person) => (
       })
 )
 
-const serviceAPI = { getAll, create }
+const remove = (id) => (
+    axios
+      .delete(`${API_URL}/persons/${id}`)
+      .then(_ => {})
+)
+
+const serviceAPI = { getAll, create, remove }
   
 export default serviceAPI
