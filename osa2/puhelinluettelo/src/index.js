@@ -6,6 +6,8 @@ import Phoneform from './components/Phoneform'
 import Phonelist from './components/Phonelist'
 import Phonefilter from './components/Phonefilter'
 
+const API_URL = "http://localhost:3001"
+
 const App = () => {
   const [ persons, setPersons ] = useState([])
   const [ newName, setNewName ] = useState('')
@@ -17,8 +19,7 @@ const App = () => {
     
     const newPerson = { 
       name: newName,
-      number: newNumber,
-      visible: true
+      number: newNumber
     }
     
     const duplicatePersons = persons.filter(person => person.name === newPerson.name)
@@ -27,9 +28,16 @@ const App = () => {
       return
     }
 
-    setPersons(persons.concat(newPerson))    
-    setNewName('')
-    setNewNumber('')
+    axios
+      .post(`${API_URL}/persons`, newPerson)
+      .then(response => { 
+        const newVisiblePerson = {...response.data, visible: true}
+        setPersons(persons.concat(newVisiblePerson))
+
+        setNewName('')
+        setNewNumber('')
+      })
+    
   }
 
   const handleNameInputChange = (event) => (
@@ -67,7 +75,7 @@ const App = () => {
 
   const loadPersonsHook = () => {
     axios
-      .get('http://localhost:3001/persons')
+      .get(`${API_URL}/persons`)
       .then(response => {
         const loadedPersons = response.data
           .map(person => {
