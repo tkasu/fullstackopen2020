@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
-import axios from 'axios'
+import personService from './services/persons'
 import Header from './components/Header'
 import Phoneform from './components/Phoneform'
 import Phonelist from './components/Phonelist'
 import Phonefilter from './components/Phonefilter'
-
-const API_URL = "http://localhost:3001"
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
@@ -28,11 +26,10 @@ const App = () => {
       return
     }
 
-    axios
-      .post(`${API_URL}/persons`, newPerson)
-      .then(response => { 
-        const newVisiblePerson = {...response.data, visible: true}
-        setPersons(persons.concat(newVisiblePerson))
+    personService
+      .create(newPerson)
+      .then(newPerson => { 
+        setPersons(persons.concat(newPerson))
 
         setNewName('')
         setNewNumber('')
@@ -74,17 +71,9 @@ const App = () => {
   }
 
   const loadPersonsHook = () => {
-    axios
-      .get(`${API_URL}/persons`)
-      .then(response => {
-        const loadedPersons = response.data
-          .map(person => {
-            const visiblePerson = {
-              ...person,
-              visible: true
-            }
-            return visiblePerson
-          })
+    personService
+      .getAll()
+      .then(loadedPersons => {
         setPersons(loadedPersons)
       })
   }
