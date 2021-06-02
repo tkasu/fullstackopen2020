@@ -1,17 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
+import axios from 'axios'
 import Header from './components/Header'
 import Phoneform from './components/Phoneform'
 import Phonelist from './components/Phonelist'
 import Phonefilter from './components/Phonefilter'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', visible: true},
-    { name: 'Ada Lovelace', number: '39-44-5323523', visible: true },
-    { name: 'Dan Abramov', number: '12-43-234345', visible: true },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', visible: true }
-  ])
+  const [ persons, setPersons ] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ nameFilter, setNameFilter ] = useState('')
@@ -59,7 +55,8 @@ const App = () => {
       setPersons(persons.map(person => {
         const newPersonObj = { 
           ...person, 
-          visible: person.visible = person.name.toLocaleLowerCase().includes(newNameFilter) 
+          visible: person.visible = person.name.toLocaleLowerCase()
+            .includes(newNameFilter.toLocaleLowerCase()) 
         }
         return newPersonObj
       }))
@@ -67,6 +64,23 @@ const App = () => {
 
     setNameFilter(newNameFilter)
   }
+
+  const loadPersonsHook = () => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        const loadedPersons = response.data
+          .map(person => {
+            const visiblePerson = {
+              ...person,
+              visible: true
+            }
+            return visiblePerson
+          })
+        setPersons(loadedPersons)
+      })
+  }
+  useEffect(loadPersonsHook, [])
 
   return (
     <div>
